@@ -23,6 +23,8 @@ config/secret/
 secret/
 .env
 *.env
+config/*
+!config/__init__.py
 
 # Logs
 *.log

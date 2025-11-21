@@ -1,24 +1,14 @@
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ParseMode
 from config.config import TOKEN, DATABASE_URL
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
 from models import Base
+from core import router, async_session, engine
+import handlers.handlers
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
+dp.include_router(router)
 
-# Асинхронный движок SQLAlchemy
-engine = create_async_engine(DATABASE_URL, echo=True)
-
-# Фабрика сессий для работы с базой
-# noinspection PyTypeChecker
-async_session = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
-)
 
 async def init_db():
     async with engine.begin() as conn:
@@ -27,7 +17,7 @@ async def init_db():
 
 async def main():
     await init_db()
-    await dp.start_polling()
+    await dp.start_polling(bot)
 
 if __name__=='__main__':
     asyncio.run(main())
