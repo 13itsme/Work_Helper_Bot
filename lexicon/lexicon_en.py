@@ -13,10 +13,6 @@ LEXICON_EN = {
         "/sum - Check the total sum of your notes\n"
         "/list - View your list of videos"
     ),
-    'empty_add': (
-        "It seems you sent /add without any information.\n"
-        "Please use the format: /add [video's title] [cost in $]"
-    ),
     'non_empty_add': (
         "✅ Video successfully added!\n"
         "Current total sum of all videos: {total}$"
@@ -27,5 +23,5 @@ LEXICON_EN = {
         "Use the format: /delete [video's title]"
     ),
     'non_empty_delete': "🗑️ Video successfully deleted!",
-    'list': "📄 Your list of videos: {videos_list}"
+    'list': "📄 Your list of videos:\n{videos_list}"
 }
