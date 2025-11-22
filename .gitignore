@@ -19,12 +19,11 @@ __pycache__/
 *.db-journal
 
 # Secrets
-config/secret/
+# Secrets
+config/
 secret/
 .env
 *.env
-config/*
-!config/__init__.py
 
 # Logs
 *.log
