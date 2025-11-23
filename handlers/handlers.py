@@ -43,6 +43,7 @@ async def add_command(message: Message):
 
     if len(title) > 20:
         await message.reply("Title is too long. Max 20 characters.")
+        return
 
     async with async_session() as session:
         existing = await session.execute(
@@ -161,7 +162,9 @@ async def delete_all_confirmation(message: Message, state: FSMContext):
             await session.execute(delete(Record))
             await session.commit()
         await message.answer('All videos have been deleted.')
-    else:
+    if user_reply == 'n':
         await message.answer('Operation cancelled')
+    else:
+        await message.answer('Sorry, you should have send me Y or N.\nIf you want to continue, send me /delete_all one more time')
 
     await state.clear()

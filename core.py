@@ -10,6 +10,10 @@ LOCAL_DB = 'sqlite+aiosqlite:///./database/workhelper.db'
 # База для деплоя
 DATABASE_URL = os.getenv('DATABASE_URL', LOCAL_DB)
 
+# Если DATABASE_URL начинается с postgres://, меняем на postgresql+asyncpg://
+if DATABASE_URL.startswith('postgres://'):
+    DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+asyncpg://', 1)
+
 # Асинхронный движок SQLAlchemy
 engine = create_async_engine(DATABASE_URL, echo=True)
 
