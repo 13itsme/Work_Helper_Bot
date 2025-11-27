@@ -7,6 +7,8 @@ from aiogram.filters import Command, StateFilter
 from sqlalchemy import select, delete
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
+import httpx
+from api.exchange_api import convert_currency
 
 class DeleteAllStates(StatesGroup):
     waiting_for_confirmation = State()
@@ -165,3 +167,30 @@ async def delete_all_confirmation(message: Message, state: FSMContext):
         await message.answer('Operation cancelled')
 
     await state.clear()
+
+
+# Хендлер /exchange
+@router.message(Command('exchange'))
+async def exchange_command(message: Message):
+    format_message = message.text.split()
+
+    if len(format_message) < 3:
+        await message.answer('Use: /exchange [amount] [currency]')
+        return
+
+    try:
+        amount = int(format_message[1])
+    except ValueError:
+        await message.answer('Amount must be a number!')
+        return
+
+    target_currency = format_message[2].upper()
+
+    try:
+        result = await convert_currency(amount, 'USD', target_currency)
+        if result:
+            await message.answer(f'💱 {amount} USD = {result:.2f} {target_currency}')
+        else:
+            await message.answer(f'Error: Currency {target_currency} not found')
+    except Exception as e:
+        await message.answer(f'Error: {str(e)}')
