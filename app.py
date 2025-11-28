@@ -23,6 +23,7 @@ async def set_bot_commands():
         types.BotCommand(command='delete_all', description='Delete all videos from list'),
         types.BotCommand(command='exchange', description='Convert USD to any currency you want')
     ]
+    await bot.set_my_commands(commands)
 
 
 async def init_db():
